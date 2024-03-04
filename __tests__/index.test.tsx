@@ -1,17 +1,32 @@
-/**
- * @jest-environment jsdom
- */
-import { render, screen } from "@testing-library/react";
-import Home from "@/pages/home/index";
+import Home from "@/app/page";
+import { cleanup, render, screen, within } from "@testing-library/react";
+import { act } from "react-dom/test-utils";
 
-describe("Home", () => {
-  it("renders a heading", () => {
+describe("Eventogy App", () => {
+
+  beforeEach(async () => {
     render(<Home />);
-
-    const heading = screen.getByRole("heading", {
-      name: /welcome to next\.js!/i,
-    });
-
-    expect(heading).toBeInTheDocument();
   });
-});
+
+  afterEach(() => {
+    cleanup();
+  })
+
+  it("Page renders", () => {
+
+    const header = screen.getByTestId("header");
+    expect(header).toBeInTheDocument();
+
+    const searchBar = within(header).getByRole("searchbox");
+    expect(searchBar).toBeInTheDocument();
+  });
+
+  it("Page successfully recieves data", async () => {
+    await act(() => {
+      const events = screen.getByTestId("events");
+      const eventItems = within(events).getAllByTestId("eventItem");
+      expect(eventItems).toBeGreaterThan(0);
+    })
+  });
+
+})
