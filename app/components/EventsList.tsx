@@ -28,7 +28,7 @@ export default function EventsList( props : { events : Event[]}){
         } else {
             return orderedResult;
         }
-    }, [search?.query]);
+    }, [search?.query, props.events]);
 
     return <div data-testid="events" className="grid grid-cols-4 gap-4">
                 {filterEvents?.map(event => 

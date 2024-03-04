@@ -10,14 +10,6 @@ import { Star } from "lucide-react";
 import gig from "@/app/images/gig.jpg";
 
 export const EventCard = (props : { event : Event }) => {
-
-    /* Logic gets next date - added in error
-    const latestDateMemo = useMemo(() => {
-        const orderedDates = [...props.event.data.scheduled_dates]
-            .sort((a,b) => new Date(a).getTime() - new Date(b).getTime());
-        return new Date(orderedDates[0]).toDateString();
-    }, [props.event.data.scheduled_dates]);*/
-
     const orderedDates = useMemo(() => {
         const orderedDates = [...props.event.data.scheduled_dates]
             .sort((a,b) => new Date(a).getTime() - new Date(b).getTime());
