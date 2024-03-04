@@ -11,5 +11,3 @@ export default function Home() {
     </Suspense>
   </main>;
 }
-
-//<GenerateSkeletonGrid rowAmount={4} cardAmount={16} />

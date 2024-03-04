@@ -4,13 +4,21 @@ import { EventCard } from "./EventCard";
 import { Event } from "@/app/types/event";
 import { SearchContext } from "../providers/searchContextProvider";
 
+// Logic gets next date - added in error
+    const LatestDate = (dates : Date[]) => {
+        const orderedDates = dates.sort((a,b) => new Date(a).getTime() - new Date(b).getTime());
+        return new Date(orderedDates[0]);
+    };
+
 export default function EventsList( props : { events : Event[]}){
     const search = useContext(SearchContext);
 
     const filterEvents = useMemo(() => {
-        if(props.events && search?.query && search.query != "" ){
+        const orderedResult = props.events.sort((a,b) => LatestDate(a.data.scheduled_dates).getTime() - LatestDate(b.data.scheduled_dates).getTime());
+
+        if(search?.query && search.query != "" ){
             const finalQuery = search.query.toLowerCase();
-            const finalResult = props.events.reduce((events : Event[], event : Event) => {
+            const finalResult = orderedResult.reduce((events : Event[], event : Event) => {
                 if(event.name.toLowerCase().includes(finalQuery) || event.data.timezone.toLowerCase().includes(finalQuery)){
                     events.push(event);
                 }
@@ -18,7 +26,7 @@ export default function EventsList( props : { events : Event[]}){
             }, []);
             return finalResult
         } else {
-            return props.events;
+            return orderedResult;
         }
     }, [search?.query]);
 
